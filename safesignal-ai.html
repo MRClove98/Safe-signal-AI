@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1220">
+<meta name="description" content="SafeSignal AI — emergency information and preparedness companion.">
+<title>SafeSignal AI</title>
+<style>
+:root{
+ --bg:#f4f7fb;--card:#fff;--ink:#101828;--muted:#667085;--line:#e4e7ec;
+ --accent:#2563eb;--accent2:#1d4ed8;--red:#dc2626;--orange:#ea580c;--yellow:#ca8a04;
+ --green:#15803d;--nav:#0b1220;--shadow:0 10px 30px rgba(16,24,40,.08);
+ --radius:20px;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.45}
+button,input,select{font:inherit}button{cursor:pointer}.app{min-height:100vh}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(11,18,32,.96);color:#fff;padding:12px max(16px,calc((100% - 1180px)/2));display:flex;align-items:center;gap:14px;backdrop-filter:blur(12px)}
+.logo{font-weight:850;letter-spacing:-.5px;font-size:20px;display:flex;gap:9px;align-items:center}.logo-mark{width:30px;height:30px;border-radius:9px;background:#fff;color:#0b1220;display:grid;place-items:center}
+.net{margin-left:auto;font-size:12px;padding:7px 10px;border-radius:999px;background:#172033;color:#cbd5e1}.net.online{color:#86efac}.net.offline{color:#fca5a5}
+.container{max-width:1180px;margin:auto;padding:20px 16px 80px}.hero{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:end;margin:12px 0 18px}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}.hero h1{font-size:clamp(28px,5vw,46px);letter-spacing:-1.5px;margin:4px 0}.location{color:var(--muted)}
+.status{background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:var(--shadow);margin-bottom:18px}.status-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}.pill{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:850}.pill.red{background:#fee2e2;color:#991b1b}.pill.green{background:#dcfce7;color:#166534}.pill.orange{background:#ffedd5;color:#9a3412}.dot{width:8px;height:8px;border-radius:50%;background:currentColor}.status h2{margin:10px 0 4px;font-size:26px}.meta{color:var(--muted);font-size:13px}.source{margin-top:13px;display:flex;gap:8px;flex-wrap:wrap}.tag{border:1px solid var(--line);border-radius:10px;padding:6px 9px;font-size:11px;font-weight:750;background:#fafafa}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}.card{grid-column:span 6;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}.card.full{grid-column:1/-1}.card.third{grid-column:span 4}.card h3{margin:0 0 6px;font-size:18px}.card p{margin:5px 0;color:var(--muted)}.icon{font-size:25px;margin-bottom:8px}.danger{background:#fff7f7;border-color:#fecaca}.primary{width:100%;border:0;border-radius:15px;padding:15px 18px;background:var(--accent);color:#fff;font-weight:850;font-size:16px;box-shadow:0 7px 18px rgba(37,99,235,.22)}.primary:hover{background:var(--accent2)}.secondary{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:13px;padding:11px 14px;font-weight:750}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.actions button{flex:1;min-width:145px}
+.steps{display:grid;gap:9px;margin-top:14px}.step{display:flex;gap:11px;padding:11px;border:1px solid var(--line);border-radius:13px;background:#fafafa}.num{width:27px;height:27px;border-radius:50%;background:#e0e7ff;color:#3730a3;display:grid;place-items:center;font-weight:900;flex:0 0 auto}.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px}.section-title small{color:var(--muted)}
+.progress{height:9px;background:#eef2f6;border-radius:99px;overflow:hidden;margin:12px 0}.bar{height:100%;background:var(--accent);width:72%;border-radius:99px}.kit-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #eef0f3}.kit-row:last-child{border-bottom:0}.kit-row input{width:19px;height:19px}.kit-row label{flex:1}.timeline{position:relative;margin-top:12px}.event{display:grid;grid-template-columns:70px 1fr;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.event time{font-weight:800;font-size:12px;color:var(--muted)}.event strong{display:block}.map{height:310px;border-radius:17px;overflow:hidden;background:#dbeafe;position:relative;border:1px solid #bfdbfe}
+.map-bg{height:100%;background:linear-gradient(135deg,#dbeafe 0 32%,#bfdbfe 32% 34%,#e0f2fe 34% 65%,#bae6fd 65% 67%,#dbeafe 67%);position:relative}.road{position:absolute;height:8px;background:#fff;box-shadow:0 0 0 2px #cbd5e1;transform:rotate(-18deg);left:-10%;right:-10%;top:45%}.road.r2{transform:rotate(27deg);top:68%}.road.r3{transform:rotate(83deg);left:48%;right:auto;width:8px;height:120%;top:-10%}.marker{position:absolute;width:34px;height:34px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:grid;place-items:center;color:#fff;font-size:16px;font-weight:900;box-shadow:0 4px 10px #0003}.marker span{transform:rotate(45deg)}.you{background:#2563eb;left:28%;top:37%}.shelter{background:#16a34a;left:66%;top:56%}.map-label{position:absolute;left:15px;top:15px;background:#fff;padding:8px 10px;border-radius:10px;font-size:11px;font-weight:800;box-shadow:0 4px 15px #0002}
+.call-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.call{border:1px solid var(--line);border-radius:13px;padding:13px;text-decoration:none;color:inherit;text-align:center;background:#fafafa}.call b{display:block;font-size:19px}.call small{color:var(--muted)}
+.news{display:grid;gap:10px}.news-item{padding:12px;border:1px solid var(--line);border-radius:13px}.news-item time{font-size:11px;color:var(--muted);font-weight:800}.news-item strong{display:block;margin-top:3px}.news-item a{font-size:12px;color:var(--accent);font-weight:750}
+.footer{margin-top:25px;color:var(--muted);font-size:12px;text-align:center}.live{background:#111827;color:#f9fafb;padding:10px 14px;text-align:center;font-weight:850;font-size:12px;letter-spacing:.03em}.live b{color:#fbbf24}
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:45;background:rgba(255,255,255,.96);border-top:1px solid var(--line);display:flex;justify-content:center;gap:3px;padding:8px env(safe-area-inset-right) calc(8px + env(safe-area-inset-bottom)) env(safe-area-inset-left);backdrop-filter:blur(12px)}.nav button{border:0;background:none;padding:8px 11px;border-radius:11px;font-size:11px;color:var(--muted);font-weight:800}.nav button:hover{background:#eef2ff;color:#3730a3}
+.modal{position:fixed;inset:0;background:#0008;z-index:100;display:none;align-items:flex-end;justify-content:center}.modal.open{display:flex}.sheet{width:min(680px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:25px 25px 0 0;padding:22px}.sheet h2{margin-top:0}.close{float:right;border:0;background:#f2f4f7;border-radius:50%;width:34px;height:34px;font-size:20px}
+.toast{position:fixed;top:74px;right:16px;z-index:120;background:#111827;color:#fff;border-radius:13px;padding:12px 15px;box-shadow:var(--shadow);display:none;max-width:330px}.toast.show{display:block}
+label.field{display:block;font-weight:750;font-size:13px;margin:13px 0 5px}input[type=text],select{width:100%;border:1px solid #d0d5dd;border-radius:11px;padding:11px 12px;background:#fff}
+@media(max-width:760px){.hero{grid-template-columns:1fr}.card,.card.third{grid-column:1/-1}.call-grid{grid-template-columns:1fr 1fr 1fr}.topbar{padding-left:14px;padding-right:14px}.container{padding-bottom:92px}.nav{justify-content:space-around}.nav button{padding:8px 6px}}
+@media(min-width:761px){.emergency-card{grid-column:span 8}.kit-card{grid-column:span 4}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="logo"><div class="logo-mark">✦</div>SafeSignal AI</div>
+  <div id="network" class="net">Checking connection…</div>
+</header>
+
+<main class="container">
+<section class="hero">
+  <div>
+    <div class="eyebrow">Emergency companion</div>
+    <h1>Know what to do.</h1>
+    <div class="location">📍 Bangkok, Thailand · Approximate location</div>
+  </div>
+  <button class="secondary" onclick="openModal('settings')">⚙ Setup</button>
+</section>
+
+<section class="status" id="status">
+  <div class="status-head">
+    <div>
+      <span class="pill green"><span class="dot"></span> NO VERIFIED ALERT</span>
+      <h2>No verified emergency detected</h2>
+      <div class="meta">Bangkok · Current emergency feeds must be verified</div>
+    </div>
+    <span class="tag">LIVE DATA</span>
+  </div>
+  <div class="source"><span class="tag">🛡️ Official-source layout example</span><span class="tag">Verification: simulated</span></div>
+</section>
+
+<div class="grid">
+<section class="card emergency-card danger" id="now">
+  <div class="icon">🚨</div>
+  <h3>What should I do now?</h3>
+  <p>Get a short, prioritized emergency checklist based on the simulated situation.</p>
+  <button class="primary" onclick="openModal('instructions')">Get Emergency Instructions</button>
+  <div class="steps">
+    <div class="step"><div class="num">1</div><div><b>Follow verified local instructions.</b><br><small>Do not rely on this live for evacuation decisions.</small></div></div>
+    <div class="step"><div class="num">2</div><div><b>Avoid floodwater.</b><br><small>Do not walk or drive through unknown-depth water.</small></div></div>
+    <div class="step"><div class="num">3</div><div><b>Keep communication available.</b><br><small>Charge your phone and keep essential contacts accessible.</small></div></div>
+  </div>
+</section>
+
+<section class="card kit-card" id="kit">
+  <div class="section-title"><div><div class="icon">🧰</div><h3>My emergency kit</h3></div><b id="pct">72%</b></div>
+  <p>Reasonable preparedness — not panic buying.</p>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+  <div id="kitList"></div>
+  <button class="secondary" style="width:100%;margin-top:10px" onclick="showToast('Checklist saved locally on this device.')">Save checklist</button>
+</section>
+
+<section class="card" id="evacuation">
+  <div class="icon">📍</div>
+  <h3>Where should I evacuate?</h3>
+  <p><b>No verified evacuation center is available in this live.</b></p>
+  <p class="meta">A production version must query official shelter data before displaying a destination.</p>
+  <div class="map" aria-label="Demo map showing approximate user and shelter markers">
+    <div class="map-bg"><div class="road"></div><div class="road r2"></div><div class="road r3"></div>
+      <div class="map-label">LIVE MAP DATA REQUIRED</div>
+      <div class="marker you"><span>●</span></div>
+      <div class="marker shelter"><span>+</span></div>
+    </div>
+  </div>
+  <div class="source"><span class="tag">🔵 Blue: approximate user</span><span class="tag">🟢 Green: verified shelter</span></div>
+</section>
+
+<section class="card" id="contacts">
+  <div class="icon">📞</div>
+  <h3>Emergency contacts</h3>
+  <p>Emergency numbers must be retrieved from authoritative country sources and verified before display.</p>
+  <div class="call-grid">
+    <a class="call" href="tel:191"><b>191</b><small>Police</small></a>
+    <a class="call" href="tel:199"><b>199</b><small>Fire</small></a>
+    <a class="call" href="tel:1669"><b>1669</b><small>Medical</small></a>
+  </div>
+  <button class="primary" style="margin-top:12px;background:#b91c1c" onclick="showToast('Call the appropriate verified emergency service for your country.')">CALL EMERGENCY SERVICES</button>
+</section>
+
+<section class="card full" id="updates">
+  <div class="section-title"><div><div class="icon">📰</div><h3>Live emergency updates</h3></div><small>Live timeline</small></div>
+  <div class="news">
+    <div class="news-item"><time>LIVE FEED</time><strong>No verified emergency updates are currently available.</strong><span class="tag">SOURCE REQUIRED</span></div>
+    <div class="news-item"><time>SAFETY RULE</time><strong>Unverified reports are not presented as confirmed events.</strong><span class="tag">TRUST SYSTEM</span></div>
+  </div>
+  <p class="meta" style="margin-top:13px">Every live item must link to the original authoritative source.</p>
+</section>
+
+<section class="card third" id="statements">
+  <div class="icon">🏛️</div><h3>Government statements</h3>
+  <p>Official statements should be displayed with speaker, position, timestamp, summary, and original source.</p>
+  <span class="tag">LIVE DATA</span>
+</section>
+<section class="card third">
+  <div class="icon">🗺️</div><h3>Live disaster map</h3>
+  <p>Hazard, evacuation, road and shelter layers must come from verified feeds.</p>
+  <button class="secondary" onclick="openModal('map')">Open map</button>
+</section>
+<section class="card third">
+  <div class="icon">🤖</div><h3>SafeSignal AI</h3>
+  <p>Ask about preparedness, but current emergency answers require verified live data.</p>
+  <button class="secondary" onclick="openModal('chat')">Open AI chat</button>
+</section>
+
+<section class="card full">
+  <div class="section-title"><div><div class="icon">📋</div><h3>What has happened?</h3></div><small>Chronological view</small></div>
+  <div class="timeline">
+    <div class="event"><time>—</time><div><strong>No verified events available</strong><span class="meta">The timeline will populate only from validated live sources.</span></div></div>
+  </div>
+</section>
+</div>
+
+<div class="footer">
+  <b>Trust rule:</b> SafeSignal AI should never invent emergency information, shelters, orders, or numbers.<br>
+  Offline cached information must always be labeled as potentially outdated. Live emergency decisions require current verified information.
+</div>
+</main>
+
+<nav class="nav" aria-label="Primary navigation">
+ <button onclick="go('now')">🚨 Now</button><button onclick="go('evacuation')">📍 Evacuate</button><button onclick="go('kit')">🧰 Kit</button><button onclick="go('updates')">📰 Updates</button><button onclick="openModal('chat')">🤖 AI</button>
+</nav>
+
+<div class="modal" id="modal"><div class="sheet">
+ <button class="close" onclick="closeModal()">×</button>
+ <div id="modalContent"></div>
+</div></div>
+<div class="toast" id="toast"></div>
+</div>
+
+<script>
+const kit=[
+ ["Water","Emergency water supply appropriate to household needs",true],
+ ["Shelf-stable food","Easy-to-prepare food for household needs",true],
+ ["Power","Power bank, batteries and charging cables",true],
+ ["Light","Battery-powered flashlight or lamp",false],
+ ["First aid","Basic first-aid and personal medical necessities",true],
+ ["Communication","Radio/backup communication option",false],
+ ["Hygiene","Soap, sanitizer and essential hygiene supplies",true],
+ ["Documents","Secure copies of important documents",false],
+ ["Pet supplies","Food, water and pet essentials if applicable",true]
+];
+const state=JSON.parse(localStorage.getItem("safesignal-kit")||"null")||kit.map(x=>x[2]);
+function renderKit(){
+ const box=document.getElementById("kitList");box.innerHTML="";
+ state.forEach((done,i)=>{const d=document.createElement("div");d.className="kit-row";d.innerHTML=`<input type="checkbox" ${done?"checked":""} aria-label="Mark ${kit[i][0]} complete"><label><b>${kit[i][0]}</b><br><small>${kit[i][1]}</small></label>`;d.querySelector("input").onchange=e=>{state[i]=e.target.checked;localStorage.setItem("safesignal-kit",JSON.stringify(state));renderKit()};box.appendChild(d)});
+ const p=Math.round(state.filter(Boolean).length/state.length*100);document.getElementById("pct").textContent=p+"%";document.getElementById("bar").style.width=p+"%";
+}
+renderKit();
+function go(id){document.getElementById(id).scrollIntoView({behavior:"smooth",block:"start"})}
+function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800)}
+function openModal(type){
+ const c=document.getElementById("modalContent");
+ const data={
+ instructions:`<h2>🚨 Immediate instructions</h2><p><b>DEMO MODE:</b> Live emergency instructions are only shown after authoritative data has been successfully verified.</p><div class="steps"><div class="step"><div class="num">1</div><div><b>Check official alerts.</b><br>Follow current instructions from your local emergency authorities.</div></div><div class="step"><div class="num">2</div><div><b>Protect yourself.</b><br>Use disaster-specific protective actions and stay away from obvious hazards.</div></div><div class="step"><div class="num">3</div><div><b>Evacuate only on verified information.</b><br>Use official evacuation routes or shelters when an order/recommendation applies.</div></div></div><h3>AVOID</h3><p>Do not enter floodwater, travel into hazardous areas, or treat unverified reports as confirmed facts.</p>`,
+ settings:`<h2>⚙ Your setup</h2><p>Preferences are stored locally in this prototype.</p><label class="field">Country<select><option>Thailand</option><option>United Kingdom</option><option>United States</option><option>Singapore</option><option>Other</option></select></label><label class="field">City / province / state<input type="text" value="Bangkok"></label><label class="field">Building type<select><option>Apartment / condo</option><option>House</option><option>Other</option></select></label><button class="primary" onclick="closeModal();showToast('Setup saved locally.')">Save setup</button>`,
+ map:`<h2>🗺️ Live disaster map</h2><p><b>LIVE DATA REQUIRED.</b> Only verified hazard, shelter and road layers from authoritative feeds may be rendered.</p><div class="map"><div class="map-bg"><div class="road"></div><div class="road r2"></div><div class="road r3"></div><div class="map-label">LIVE MAP DATA REQUIRED</div><div class="marker you"><span>●</span></div><div class="marker shelter"><span>+</span></div></div></div>`,
+ chat:`<h2>🤖 SafeSignal AI</h2><p>Ask a question. Emergency answers require verified live emergency feeds. If current data cannot be verified, the assistant will say so.</p><input id="chatInput" type="text" placeholder="e.g. What should I prepare for a flood?" style="width:100%;padding:12px;border:1px solid #d0d5dd;border-radius:11px"><button class="primary" style="margin-top:10px" onclick="liveChat()">Ask SafeSignal AI</button><div id="chatAnswer" style="margin-top:15px"></div>`
+ };
+ c.innerHTML=data[type]||"";
+ document.getElementById("modal").classList.add("open");
+}
+function closeModal(){document.getElementById("modal").classList.remove("open")}
+function liveChat(){const q=(document.getElementById("chatInput").value||"").toLowerCase();let a="I can provide general preparedness guidance, but I cannot verify current local conditions from a trusted live source right now. Check official emergency authorities for current instructions.";if(q.includes("flood"))a="For a flood: avoid floodwater, do not drive through flooded roads, move to safer/higher areas if instructed, keep communication devices charged, and follow verified evacuation instructions.";if(q.includes("earthquake"))a="For an earthquake: Drop, Cover and Hold On during shaking; stay away from windows; after shaking, check official instructions and be alert for aftershocks.";document.getElementById("chatAnswer").innerHTML=`<div class="step"><div class="num">AI</div><div>${a}<br><small><b>Information checked:</b> Live verification unavailable · <b>Sources:</b> none verified</small></div></div>`}
+function updateNetwork(){const n=document.getElementById("network");if(navigator.onLine){n.textContent="● Online";n.className="net online"}else{n.textContent="● Offline";n.className="net offline";showToast("OFFLINE: cached information may not reflect current conditions.")}}
+window.addEventListener("online",updateNetwork);window.addEventListener("offline",updateNetwork);updateNetwork();
+document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
+</script>
+</body>
+</html>
